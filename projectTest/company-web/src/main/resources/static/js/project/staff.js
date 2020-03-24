@@ -15,19 +15,18 @@ layui.use(['layer', 'table', 'upload', 'element'], function () {
     //执行一个 table 实例
     table.render({
         elem: '#demo'
-        , height: 420
         , url: 'company/query' //数据接口
         , title: '员工表'
         , page: true //开启分页
         , toolbar: '#toolbarDemo'
         , cols: [[ //表头
-            {type: 'checkbox', fixed: 'left'}
+            { fixed: 'left',field: 'staffId',title: '员工编号',width: 130, align: 'center'}
             , {field: 'staffName', title: '员工名', width: 130, align: 'center'}
             , {field: 'account', title: '账号', width: 200, align: 'center'}
             , {field: 'updatePower', title: '修改权限', templet: '#switchTpl1', width: 130, align: 'center'}
             , {field: 'insertPower', title: '增加权限', templet: '#switchTpl2', width: 130, align: 'center'}
             , {field: 'deletePower', title: '删除权限', templet: '#switchTpl3', width: 130, align: 'center'}
-            , {field: 'createTime', title: '加入时间', width: 260, align: 'center'}
+            , {field: 'createTime', title: '加入时间', width: 270, align: 'center'}
             , {fixed: 'right', width: 165, align: 'center', toolbar: '#barDemo'}
         ]]
     });
@@ -102,12 +101,6 @@ layui.use(['layer', 'table', 'upload', 'element'], function () {
                         })
                     }
                 });
-                break;
-            case 'importStaff':
-                layer.msg('导入员工');
-                break;
-            case 'downLoadTemplate':
-                layer.msg('模板下载');
                 break;
         }
         ;

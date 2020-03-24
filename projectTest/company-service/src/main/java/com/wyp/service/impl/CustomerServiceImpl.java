@@ -3,9 +3,11 @@ package com.wyp.service.impl;
 import com.google.common.base.Preconditions;
 import com.wyp.dao.CustomerDao;
 import com.wyp.dao.domain.req.CustomerInfoReqDo;
+import com.wyp.dao.domain.req.CustomerQueryReqDo;
 import com.wyp.dao.domain.res.CustomerInfoResDo;
 import com.wyp.service.CustomerService;
 import com.wyp.service.dto.req.CustomerInfoReqDto;
+import com.wyp.service.dto.req.CustomerQueryReqDto;
 import com.wyp.service.dto.res.CustomerInfoResDto;
 import com.wyp.utils.CommonUtil;
 import com.wyp.utils.ConvertBeanUtil;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 /**
  * @author: wyp
@@ -25,8 +28,15 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerDao customerDao;
 
-    public List<CustomerInfoResDto> queryCustomer(Long companyId) {
-        List<CustomerInfoResDo> customerInfoResDos = customerDao.queryCustomer(companyId);
+    public List<CustomerInfoResDto> queryCustomer(CustomerQueryReqDto customerQueryReqDto, HttpServletRequest request) {
+        CustomerQueryReqDo customerQueryReqDo = ConvertBeanUtil.convertToBean(customerQueryReqDto, CustomerQueryReqDo.class);
+        //分页
+        int page = Integer.parseInt(request.getParameter("page"));
+        int limit = Integer.parseInt(request.getParameter("limit"));
+        int currIndex = (page-1)*limit;
+        customerQueryReqDo.setCurrIndex(currIndex);
+        customerQueryReqDo.setPageSize(limit);
+        List<CustomerInfoResDo> customerInfoResDos = customerDao.queryCustomer(customerQueryReqDo);
         if (CollectionUtils.isEmpty(customerInfoResDos)){
             return null;
         }
@@ -68,7 +78,8 @@ public class CustomerServiceImpl implements CustomerService {
         return Boolean.TRUE;
     }
 
-    public int count(Long customerId) {
-        return 0;
+    public int count(CustomerQueryReqDto customerQueryReqDto) {
+        CustomerQueryReqDo customerQueryReqDo = ConvertBeanUtil.convertToBean(customerQueryReqDto, CustomerQueryReqDo.class);
+        return customerDao.count(customerQueryReqDo);
     }
 }

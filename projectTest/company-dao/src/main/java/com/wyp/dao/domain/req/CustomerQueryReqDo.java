@@ -1,15 +1,14 @@
-package com.wyp.controller.vo.req;
+package com.wyp.dao.domain.req;
 
 import lombok.Data;
 
 /**
- * @author wyp
- * @date 2020/3/24
- * @description 客户查询信息
+ * @author: wyp
+ * @date: 2020/3/24
+ * @description: 客户信息查询
  */
 @Data
-public class CustomerQuerReq {
-
+public class CustomerQueryReqDo {
     /**
      * 公司id
      */
@@ -40,4 +39,13 @@ public class CustomerQuerReq {
      */
     private String phone;
 
+    /**
+     * 总数
+     */
+    private int currIndex;
+
+    /**
+     * 每页多少个
+     */
+    private int pageSize;
 }

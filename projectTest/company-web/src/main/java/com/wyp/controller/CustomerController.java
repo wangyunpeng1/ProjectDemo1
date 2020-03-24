@@ -6,10 +6,12 @@ import com.wyp.common.domain.LoginInfo;
 import com.wyp.common.enums.MemberEnum;
 import com.wyp.common.enums.PowerEnum;
 import com.wyp.controller.vo.req.CustomerInfoReq;
+import com.wyp.controller.vo.req.CustomerQueryReq;
 import com.wyp.controller.vo.res.CustomerInfoRes;
 import com.wyp.service.CompanyService;
 import com.wyp.service.CustomerService;
 import com.wyp.service.dto.req.CustomerInfoReqDto;
+import com.wyp.service.dto.req.CustomerQueryReqDto;
 import com.wyp.service.dto.res.CustomerInfoResDto;
 import com.wyp.service.dto.res.StaffResDto;
 import com.wyp.utils.ConvertBeanUtil;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -46,19 +50,20 @@ public class CustomerController {
      */
     @ResponseBody
     @GetMapping("query")
-    public Result<List<CustomerInfoReq>> queryCustomer(HttpSession httpSession){
+    public Result<List<CustomerInfoReq>> queryCustomer(CustomerQueryReq customerQueryReq, HttpServletRequest request, HttpSession httpSession){
         //获取登录者信息
         LoginInfo loginInfo = (LoginInfo) httpSession.getAttribute("loginInfo");
+        customerQueryReq.setCompanyId(loginInfo.getCompanyId());
+        CustomerQueryReqDto customerQueryReqDto = ConvertBeanUtil.convertToBean(customerQueryReq, CustomerQueryReqDto.class);
         //获取客户信息
-        List<CustomerInfoResDto> customerInfoResDtos = customerService.queryCustomer(loginInfo.getCompanyId());
+        List<CustomerInfoResDto> customerInfoResDtos = customerService.queryCustomer(customerQueryReqDto, request);
         if (CollectionUtils.isEmpty(customerInfoResDtos)){
             return new Result(0,null,"暂时没有客户");
         }
         //参数转换
         List<CustomerInfoRes> customerInfoRes = ConvertBeanUtil.convertToList(customerInfoResDtos,CustomerInfoRes.class);
         //总数
-        int count = 0;
-//                customerService.count(loginInfo.getCompanyId());
+        int count = customerService.count(customerQueryReqDto);
         return new Result(0,customerInfoRes,count,"查询成功");
     }
 

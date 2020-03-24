@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wyp.dao.CustomerDao">
-    <select id="queryCustomer" parameterType="Long" resultType="com.wyp.dao.domain.res.CustomerInfoResDo">
+    <select id="queryCustomer" parameterType="com.wyp.dao.domain.req.CustomerQueryReqDo" resultType="com.wyp.dao.domain.res.CustomerInfoResDo">
         select * from customer
-        where companyId = #{companyId}
+        <where>
+            <if test="companyId != null">
+                and companyId = #{companyId}
+            </if>
+            <if test="customerId != null">
+                and customerId = #{customerId}
+            </if>
+            <if test="customerName != null">
+                and customerName = #{customerName}
+            </if>
+            <if test="sex != null">
+                and sex = #{sex}
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+            <if test="phone != null">
+                and phone = #{phone}
+            </if>
+        </where>
+        limit #{currIndex},#{pageSize}
     </select>
 
     <insert id="insertCustomer" parameterType="com.wyp.dao.domain.req.CustomerInfoReqDo">
@@ -25,6 +45,30 @@
     <select id="isCustomerIdExit" parameterType="Long" resultType="Boolean">
         select count(1) from customer
         where customerId = #{customerId}
+    </select>
+
+    <select id="count" parameterType="com.wyp.dao.domain.req.CustomerQueryReqDo" resultType="int">
+        select count(1) from customer
+        <where>
+            <if test="companyId != null">
+                and companyId = #{companyId}
+            </if>
+            <if test="customerId != null">
+                and customerId = #{customerId}
+            </if>
+            <if test="customerName != null">
+                and customerName = #{customerName}
+            </if>
+            <if test="sex != null">
+                and sex = #{sex}
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+            <if test="phone != null">
+                and phone = #{phone}
+            </if>
+        </where>
     </select>
 
 

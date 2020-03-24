@@ -14,16 +14,15 @@ layui.use(['layer', 'table','upload', 'element'], function(){
     //执行一个 table 实例
     table.render({
         elem: '#demo'
-        ,height: 420
         ,url: 'customer/query' //数据接口
         ,title: '客户表'
         ,page: true //开启分页
-        ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+        ,toolbar: '#toolbarDemo' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
         ,cols: [[ //表头
-            ,{field: 'customerId', title: '客户id', width:130, align:'center'}
+            { fixed: 'left',field: 'customerId', title: '客户id', width:130, align:'center'}
             ,{field: 'customerName', title: '客户名', width: 200, align:'center'}
-            ,{field: 'age', title: '年龄', width:1, align:'center'}
-            ,{field: 'sex', title: '性别', width: 130, align:'center'}
+            ,{field: 'age', title: '年龄', width:100, align:'center'}
+            ,{field: 'sex', title: '性别', width: 100, align:'center'}
             ,{field: 'phone', title: '手机号', width:130, align:'center'}
             ,{field: 'createTime', title: '加入时间', width: 260, align:'center'}
             ,{fixed: 'right', width: 165, align:'center', toolbar: '#barDemo'}

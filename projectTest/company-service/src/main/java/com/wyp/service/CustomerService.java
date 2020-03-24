@@ -1,8 +1,10 @@
 package com.wyp.service;
 
 import com.wyp.service.dto.req.CustomerInfoReqDto;
+import com.wyp.service.dto.req.CustomerQueryReqDto;
 import com.wyp.service.dto.res.CustomerInfoResDto;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -12,7 +14,7 @@ import java.util.List;
  */
 public interface CustomerService {
 
-    List<CustomerInfoResDto> queryCustomer(Long companyId);
+    List<CustomerInfoResDto> queryCustomer(CustomerQueryReqDto customerQueryReqDto, HttpServletRequest request);
 
     Boolean insertCustomer(CustomerInfoReqDto customerInfoReqDto);
 
@@ -20,5 +22,5 @@ public interface CustomerService {
 
     Boolean deleteCustomer(Long customerId);
 
-    int count(Long customerId);
+    int count(CustomerQueryReqDto customerQueryReqDto);
 }
