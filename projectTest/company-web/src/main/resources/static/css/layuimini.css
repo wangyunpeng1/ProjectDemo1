@@ -1,0 +1,8 @@
+.layui-layout-admin .layui-header{background-color:#1aa094!important;}
+.layui-header>ul>.layui-nav-item.layui-this,.layuimini-tool i:hover{background-color:#197971!important;}
+.layui-layout-admin .layui-logo {background-color:#243346!important;}
+.layui-side.layui-bg-black,.layui-side.layui-bg-black>.layui-left-menu>ul {background-color:#2f4056!important;}
+.layui-left-menu .layui-nav .layui-nav-child a:hover:not(.layui-this) {background-color:#3b3f4b;}
+.layui-layout-admin .layui-nav-tree .layui-this, .layui-layout-admin .layui-nav-tree .layui-this>a, .layui-layout-admin .layui-nav-tree .layui-nav-child dd.layui-this, .layui-layout-admin .layui-nav-tree .layui-nav-child dd.layui-this a {
+    background-color: #1aa094 !important;
+}

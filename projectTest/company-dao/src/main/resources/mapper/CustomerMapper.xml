@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyp.dao.CustomerDao">
+    <select id="queryCustomer" parameterType="Long" resultType="com.wyp.dao.domain.res.CustomerInfoResDo">
+        select * from customer
+        where companyId = #{companyId}
+    </select>
+
+    <insert id="insertCustomer" parameterType="com.wyp.dao.domain.req.CustomerInfoReqDo">
+        insert into customer
+        values (#{companyId},#{customerId},#{customerName},#{age},#{sex},#{phone},now())
+    </insert>
+    
+    <update id="updateCustomer" parameterType="com.wyp.dao.domain.req.CustomerInfoReqDo">
+        update customer
+        set customerName = #{customerName},age = #{age},sex = #{sex},phone = #{phone}
+        where customerId = #{customerId}
+    </update>
+
+    <delete id="deleteCustomer" parameterType="Long">
+        delete from customer
+        where customerId = #{customerId}
+    </delete>
+
+    <select id="isCustomerIdExit" parameterType="Long" resultType="Boolean">
+        select count(1) from customer
+        where customerId = #{customerId}
+    </select>
+
+
+</mapper>

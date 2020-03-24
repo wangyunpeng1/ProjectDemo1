@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyp.dao.CompanyDao">
+    <select id="query" resultType="com.wyp.dao.domain.res.StaffResDo">
+        select * from staff
+        where companyId = #{companyId}
+        limit #{currIndex},#{pageSize}
+    </select>
+
+    <update id="updatePower" parameterType="com.wyp.dao.domain.req.StaffReqDo">
+        update staff set updatePower = #{updatePower}
+        where staffId = #{staffId}
+    </update>
+
+
+    <update id="deletePower" parameterType="com.wyp.dao.domain.req.StaffReqDo">
+        update staff set deletePower = #{deletePower}
+        where staffId = #{staffId}
+    </update>
+
+
+    <update id="insertPower" parameterType="com.wyp.dao.domain.req.StaffReqDo">
+        update staff set insertPower = #{insertPower}
+        where staffId = #{staffId}
+    </update>
+
+    <insert id="insertStaff" parameterType="com.wyp.dao.domain.req.StaffReqDo">
+        insert into staff values (#{staffId},#{companyId},#{staffName},#{account},#{insertPower},#{deletePower},#{updatePower},now())
+    </insert>
+
+    <select id="isStaffIdExist" parameterType="Long" resultType="Boolean">
+        select count(1) from staff
+        where staffId = #{staffId}
+    </select>
+
+    <delete id="deleteStaff" parameterType="Long">
+        delete from staff
+        where staffId = #{staffId}
+    </delete>
+
+    <select id="count" parameterType="Long" resultType="int">
+        select count(1) from staff
+        where companyId = #{companyId}
+    </select>
+
+
+</mapper>
