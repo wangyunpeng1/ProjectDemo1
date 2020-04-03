@@ -2,6 +2,8 @@ package com.wyp.dao.domain.req;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @author: wyp
  * @date: 2020/3/24
@@ -38,6 +40,11 @@ public class CustomerQueryReqDo {
      * 手机号
      */
     private String phone;
+
+    /**
+     * 7day
+     */
+    private Date day;
 
     /**
      * 总数

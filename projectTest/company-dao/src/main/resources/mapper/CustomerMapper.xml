@@ -10,16 +10,16 @@
             <if test="customerId != null">
                 and customerId = #{customerId}
             </if>
-            <if test="customerName != null">
+            <if test="customerName != null and customerName != ''">
                 and customerName = #{customerName}
             </if>
-            <if test="sex != null">
+            <if test="sex != null and sex != ''">
                 and sex = #{sex}
             </if>
             <if test="age != null">
                 and age = #{age}
             </if>
-            <if test="phone != null">
+            <if test="phone != null and phone != ''">
                 and phone = #{phone}
             </if>
         </where>
@@ -70,6 +70,11 @@
             </if>
         </where>
     </select>
-
+    <select id="countSeven" parameterType="com.wyp.dao.domain.req.CustomerQueryReqDo" resultType="int">
+        select count(1) from customer
+        where companyId = #{companyId}
+        and createTime &lt; now()
+        and createTime &gt; #{day}
+    </select>
 
 </mapper>

@@ -12,5 +12,6 @@ import org.springframework.stereotype.Component;
 @Mapper
 @Component
 public interface LoginDao {
+    //登录
     Boolean login(LoginReqDo loginReqDo);
 }

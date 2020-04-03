@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyp.dao.StatisticsDao">
+    <insert id="insertStatistics" parameterType="java.lang.Long">
+        insert into statistics(staffCount,companyId,customerCount,boyCount,girlCount,weekCustomerCount,monthStaffCount)
+        value (0,#{companyId},0,0,0,0,0)
+    </insert>
+
+    <update id="updateStatistics" parameterType="com.wyp.dao.domain.req.StatisticsReqDo">
+        update statistics set
+        staffCount = #{staffCount},
+        customerCount = #{customerCount},
+        boyCount = #{boyCount},
+        girlCount = #{girlCount},
+        weekCustomerCount = #{weekCustomerCount},
+        monthStaffCount = #{monthStaffCount}
+        where companyId = #{companyId}
+    </update>
+
+    <select id="getStatisticsInfo" parameterType="java.lang.Long" resultType="com.wyp.dao.domain.res.StatisticsResDo">
+        select * from statistics
+        where companyId = #{companyId}
+    </select>
+</mapper>

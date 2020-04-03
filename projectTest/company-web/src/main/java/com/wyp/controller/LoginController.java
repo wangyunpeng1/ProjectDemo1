@@ -58,13 +58,13 @@ public class LoginController {
             //参数转化
             LoginInfo loginInfo = ConvertBeanUtil.convertToBean(registerRes,LoginInfo.class);
             if (registerRes == null){
-                return new Result(false,"登录失败");
+                return new Result(false,"系统错误，获取登录信息失败");
             }
             //信息放入session
             httpSession.setAttribute("loginInfo",loginInfo);
             return new Result(true,"登录成功");
         }else {
-            return new Result(false,"登录失败");
+            return new Result(false,"账号密码错误");
         }
     }
 }

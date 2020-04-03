@@ -5,7 +5,7 @@ layui.use(['layer', 'table','upload', 'element'], function(){
         ,element = layui.element //元素操作
 
     //监听Tab切换
-    element.on('tab(demo)', function(data){
+    element.on('tab(customerTable)', function(data){
         layer.tips('切换了 '+ data.index +'：'+ this.innerHTML, this, {
             tips: 1
         });
@@ -13,7 +13,7 @@ layui.use(['layer', 'table','upload', 'element'], function(){
 
     //执行一个 table 实例
     table.render({
-        elem: '#demo'
+        elem: '#customerTable'
         ,url: 'customer/query' //数据接口
         ,title: '客户表'
         ,page: true //开启分页
@@ -21,16 +21,16 @@ layui.use(['layer', 'table','upload', 'element'], function(){
         ,cols: [[ //表头
             { fixed: 'left',field: 'customerId', title: '客户id', width:130, align:'center'}
             ,{field: 'customerName', title: '客户名', width: 200, align:'center'}
-            ,{field: 'age', title: '年龄', width:100, align:'center'}
-            ,{field: 'sex', title: '性别', width: 100, align:'center'}
-            ,{field: 'phone', title: '手机号', width:130, align:'center'}
+            ,{field: 'age', title: '年龄', width:130, align:'center'}
+            ,{field: 'sex', title: '性别', width: 130, align:'center'}
+            ,{field: 'phone', title: '手机号', width:200, align:'center'}
             ,{field: 'createTime', title: '加入时间', width: 260, align:'center'}
-            ,{fixed: 'right', width: 165, align:'center', toolbar: '#barDemo'}
+            ,{fixed: 'right', width: 265, align:'center', toolbar: '#barDemo'}
         ]]
     });
 
     //监听头工具栏事件
-    table.on('toolbar(test)', function(obj){
+    table.on('toolbar(customerTable)', function(obj){
         var checkStatus = table.checkStatus(obj.config.id)
             ,data = checkStatus.data; //获取选中的数据
         switch(obj.event){
@@ -57,7 +57,7 @@ layui.use(['layer', 'table','upload', 'element'], function(){
     });
 
     //监听行工具事件
-    table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+    table.on('tool(customerTable)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
         var data = obj.data //获得当前行数据
             ,layEvent = obj.event; //获得 lay-event 对应的值
         if(layEvent === 'detail'){
@@ -83,4 +83,19 @@ layui.use(['layer', 'table','upload', 'element'], function(){
             console.log(res)
         }
     });
+
+    $('#select').on('click',function () {
+        var customerId = $("#customerId").val();
+        var customerName = $("#customerName").val();
+        var sex = $("#sex").val();
+        var phone = $("#phone").val();
+        var age = $("#age").val();
+
+        table.reload('customerTable',{
+            url: '/customer/query',
+            where: {
+                customer : "{\"customerId\":\"" + customerId + "\",\"customerName\":\"" + customerName + "\",\"sex\":\"" + sex + "\",\"age\":\""+ age +"\",\"phone\":\"" + phone + "\"}"
+            }
+        })
+    })
 });

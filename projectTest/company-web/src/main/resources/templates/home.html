@@ -3,8 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <title>主页</title>
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="css/admin.css" media="all">
 </head>
 <body>
-主页
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+
+        <div class="layui-col-sm6 layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    本周新增用户数
+                    <span class="layui-badge layui-bg-blue layuiadmin-badge">周</span>
+                </div>
+                <div class="layui-card-body layuiadmin-card-list">
+                    <p class="layuiadmin-big-font">0</p>
+                    <p>
+                        用户总数
+                        <span class="layuiadmin-span-color">0 <i class="layui-inline layui-icon layui-icon-user "></i></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    本月新增员工数
+                    <span class="layui-badge layui-bg-cyan layuiadmin-badge">月</span>
+                </div>
+                <div class="layui-card-body layuiadmin-card-list">
+                    <p class="layuiadmin-big-font">0</p>
+                    <p>
+                        员工总数
+                        <span class="layuiadmin-span-color">0 <i class="layui-inline layui-icon layui-icon-face-smile-b"></i></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    公司客户月增加率
+                    <span class="layui-badge layui-bg-cyan layuiadmin-badge">月</span>
+                </div>
+                <div class="layui-card-body layuiadmin-card-list">
+
+                    <p class="layuiadmin-big-font">5%</p>
+                    <p>
+                        本月目标
+                        <span class="layuiadmin-span-color">30%<i class="layui-inline layui-icon layui-icon-flag"></i></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    公司成立天数
+                    <span class="layui-badge layui-bg-orange layuiadmin-badge">年</span>
+                </div>
+                <div class="layui-card-body layuiadmin-card-list">
+
+                    <p class="layuiadmin-big-font">500天</p>
+                    <p>
+                        成立日
+                        <span class="layuiadmin-span-color">2020/3/28 <i class="layui-inline layui-icon layui-icon-date"></i></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    统计
+                </div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-sm8">
+                            <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-pagetwo" lay-anim="fade" style="width: 100%; height: 280px;">
+                                    <div id="addCustomerMain"  style="width: 826px; height: 330px;"></div>
+                            </div>
+                        </div>
+                        <div class="layui-col-sm4">
+                            <div id="echarts-pies"  style="width: 413px; height: 330px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="layui/layui.js" charset="utf-8"></script>
+<script src="js/echarts.min.js" charset="utf-8"></script>
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('addCustomerMain'));
+    option = {
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['员工','客户']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: ['周一','周二','周三','周四','周五','周六','周日']
+        },
+        yAxis: {
+
+            type: 'value'
+        },
+        series: [
+            {
+                name:'员工',
+                type:'line',
+                stack: '总量',
+                data:[120, 132, 101, 134, 90, 230, 210]
+            },
+            {
+                name:'客户',
+                type:'line',
+                stack: '总量',
+                data:[220, 182, 191, 234, 290, 330, 310]
+            },
+        ]
+    };
+    myChart.setOption(option);
+
+    /**
+     * 玫瑰图表
+     */
+    var echartsPies = echarts.init(document.getElementById('echarts-pies'), 'walden');
+    var optionPies = {
+        title: {
+            text: '男女比例',
+            left: 'right'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['男', '女']
+        },
+        series: [
+            {
+                name: '男女比例',
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                roseType: 'radius',
+                data: [
+                    {value: 335, name: '男'},
+                    {value: 310, name: '女'},
+                ],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+    var boyGirl = [
+        {value: 10, name: '男'},
+        {value: 5, name: '女'},
+    ]
+    console.log(this.optionPies.series[0].data)
+    this.optionPies.series[0].data = boyGirl;
+    echartsPies.setOption(optionPies);
+
+
+</script>
+
 </body>
 </html>

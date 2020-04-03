@@ -14,16 +14,16 @@ import org.springframework.stereotype.Component;
 @Mapper
 @Component
 public interface RegisterDao {
-
+    //注册公司
     int registerCompany(RegisterReqDo registerReqDo);
-
+    //判断账号是否存在
     Boolean isAccountExist(@Param("account") String account);
-
+    //判断公司名字是否存在
     Boolean isCompanyNameExist(@Param("companyName") String companyName);
-
+    //通过账号获取公司信息
     RegisterResDo infoByAccount(@Param("account") String account);
-
+    //判断公司id是否存在
     Boolean isCompanyIdExist(@Param("companyId") Long companyId);
-
+    //删除账号
     int deleteAccount(@Param("account") String account);
 }

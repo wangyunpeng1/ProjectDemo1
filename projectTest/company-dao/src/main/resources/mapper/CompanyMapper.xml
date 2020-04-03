@@ -43,5 +43,15 @@
         where companyId = #{companyId}
     </select>
 
+    <select id="getCompanyId" resultType="java.lang.Long">
+        select distinct companyId from account
+    </select>
+
+    <select id="monthCount" resultType="int">
+        select count(1) from staff
+        where companyId = #{companyId}
+        and creatTime &lt; now()
+        and creatTime &gt; #{startDate}
+    </select>
 
 </mapper>

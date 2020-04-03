@@ -1,5 +1,6 @@
 package com.wyp.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.base.Preconditions;
 import com.wyp.common.Result;
 import com.wyp.common.domain.LoginInfo;
@@ -15,6 +16,9 @@ import com.wyp.service.dto.req.CustomerQueryReqDto;
 import com.wyp.service.dto.res.CustomerInfoResDto;
 import com.wyp.service.dto.res.StaffResDto;
 import com.wyp.utils.ConvertBeanUtil;
+import com.wyp.utils.Converter;
+import javafx.scene.input.DataFormat;
+import net.minidev.json.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -33,6 +38,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
+
+    private String DATE_FORMAT = "yyy-MM-dd HH:mm:ss";
 
     @Autowired
     private CustomerService customerService;
@@ -50,7 +57,11 @@ public class CustomerController {
      */
     @ResponseBody
     @GetMapping("query")
-    public Result<List<CustomerInfoReq>> queryCustomer(CustomerQueryReq customerQueryReq, HttpServletRequest request, HttpSession httpSession){
+    public Result<List<CustomerInfoReq>> queryCustomer(String customer, HttpServletRequest request, HttpSession httpSession){
+        CustomerQueryReq customerQueryReq = JSON.parseObject(customer, CustomerQueryReq.class);
+        if (customerQueryReq == null){
+            customerQueryReq = new CustomerQueryReq();
+        }
         //获取登录者信息
         LoginInfo loginInfo = (LoginInfo) httpSession.getAttribute("loginInfo");
         customerQueryReq.setCompanyId(loginInfo.getCompanyId());
@@ -61,7 +72,12 @@ public class CustomerController {
             return new Result(0,null,"暂时没有客户");
         }
         //参数转换
-        List<CustomerInfoRes> customerInfoRes = ConvertBeanUtil.convertToList(customerInfoResDtos,CustomerInfoRes.class);
+        List<CustomerInfoRes> customerInfoRes = ConvertBeanUtil.convertToList(customerInfoResDtos,CustomerInfoRes.class, new Converter<CustomerInfoResDto, CustomerInfoRes>() {
+            public void convert(CustomerInfoResDto from, CustomerInfoRes to) {
+                SimpleDateFormat f = new SimpleDateFormat(DATE_FORMAT);
+                to.setCreateTime(f.format(from.getCreateTime()));
+            }
+        });
         //总数
         int count = customerService.count(customerQueryReqDto);
         return new Result(0,customerInfoRes,count,"查询成功");

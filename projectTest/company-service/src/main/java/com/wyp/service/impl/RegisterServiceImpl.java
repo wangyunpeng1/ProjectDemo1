@@ -5,6 +5,7 @@ import com.wyp.dao.RegisterDao;
 import com.wyp.dao.domain.req.RegisterReqDo;
 import com.wyp.dao.domain.res.RegisterResDo;
 import com.wyp.service.RegisterService;
+import com.wyp.service.affair.RegisterCompanyAffair;
 import com.wyp.service.affair.RegisterStaffAffair;
 import com.wyp.service.dto.req.RegisterReqDto;
 import com.wyp.service.dto.req.StaffReqDto;
@@ -26,20 +27,14 @@ public class RegisterServiceImpl implements RegisterService {
     private RegisterDao registerDao;
     @Autowired
     private RegisterStaffAffair registerStaffAffair;
+    @Autowired
+    private RegisterCompanyAffair registerCompanyAffair;
 
     public Boolean registerCompany(RegisterReqDto registerReqDto) {
         if (registerReqDto == null){
             return Boolean.FALSE;
         }
-        //参数转换
-        RegisterReqDo registerReqDo = ConvertBeanUtil.convertToBean(registerReqDto,RegisterReqDo.class);
-        //赋值公司id
-        Long id = CommonUtil.randomNumber();
-        while (registerDao.isCompanyIdExist(id)){
-            id = CommonUtil.randomNumber();
-        }
-        registerReqDo.setCompanyId(id);
-        registerDao.registerCompany(registerReqDo);
+        registerCompanyAffair.registerCompanyAffair(registerReqDto);
         return Boolean.TRUE;
     }
 

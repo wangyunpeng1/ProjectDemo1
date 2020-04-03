@@ -38,5 +38,5 @@ public class CustomerInfoRes {
     /**
      * 加入时间
      */
-    private Date createTime;
+    private String createTime;
 }
