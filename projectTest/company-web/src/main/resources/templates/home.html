@@ -43,14 +43,14 @@
         <div class="layui-col-sm6 layui-col-md3">
             <div class="layui-card">
                 <div class="layui-card-header">
-                    公司客户月增加率
-                    <span class="layui-badge layui-bg-cyan layuiadmin-badge">月</span>
+                    公司客户周增加率
+                    <span class="layui-badge layui-bg-blue layuiadmin-badge">周</span>
                 </div>
                 <div class="layui-card-body layuiadmin-card-list">
 
                     <p class="layuiadmin-big-font">5%</p>
                     <p>
-                        本月目标
+                        本周目标
                         <span class="layuiadmin-span-color">30%<i class="layui-inline layui-icon layui-icon-flag"></i></span>
                     </p>
                 </div>
@@ -98,6 +98,24 @@
 <script src="js/echarts.min.js" charset="utf-8"></script>
 <script type="text/javascript">
     var myChart = echarts.init(document.getElementById('addCustomerMain'));
+    var boyCount = 3;
+    var girlCount = 3;
+    window.onload = function(){
+        $.ajax({
+            url:"company/Statistics",
+            type:"Get",
+            contentType:"application/json",
+            dataType:"json",
+            success:function (result) {
+                if (result.code === 1){
+                    this.boyCount= result.data.boyCount;
+                    this.girlCount= result.data.girlCount;
+                    console.log(this.boyCount+":"+this.girlCount)
+                }
+            }
+
+        })
+    }
     option = {
         tooltip: {
             trigger: 'axis'
@@ -141,7 +159,6 @@
         ]
     };
     myChart.setOption(option);
-
     /**
      * 玫瑰图表
      */
@@ -181,14 +198,14 @@
             }
         ]
     };
-    var boyGirl = [
-        {value: 10, name: '男'},
-        {value: 5, name: '女'},
-    ]
-    console.log(this.optionPies.series[0].data)
-    this.optionPies.series[0].data = boyGirl;
+    // var boyGirl = [
+    //     {value: 10, name: '男'},
+    //     {value: 5, name: '女'},
+    // ]
+    console.log(this.boyCount)
+    this.optionPies.series[0].data[0].value = this.boyCount;
+    this.optionPies.series[0].data[1].value = this.girlCount;
     echartsPies.setOption(optionPies);
-
 
 </script>
 

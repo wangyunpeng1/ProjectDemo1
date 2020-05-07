@@ -1,17 +1,18 @@
-package com.wyp.controller.vo.res;
+package com.wyp.service.dto.res;
 
 import lombok.Data;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 /**
  * @author wyp
- * @date 2020/3/26
- * @description 统计信息
+ * @date 2020/4/6
+ * @description 数据统计
  */
 @Data
-public class StatisticsRes {
+public class StatisticsResDto {
+    /**
+     * 员工id
+     */
+    private Long companyId;
 
     /**
      * 员工总数
@@ -42,20 +43,4 @@ public class StatisticsRes {
      * 最近一个月新增员工人数
      */
     private int monthStaffCount;
-
-    /**
-     * 公司客户周增加率
-     */
-    private String customerAdd;
-
-    /**
-     * 成立天数
-     */
-    private Long establishDayCount;
-
-    /**
-     * 成立时间
-     */
-    private String establishDay;
-
 }

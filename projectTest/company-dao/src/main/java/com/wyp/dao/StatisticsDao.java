@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface StatisticsDao {
     //新增统计信息
-    void insertStatistics(@Param("companyId") Long companyId);
+    int insertStatistics(@Param("companyId") Long companyId);
     //更改统计信息
     int updateStatistics(StatisticsReqDo statisticsReqDo);
     //根据公司id获取统计信息

@@ -6,8 +6,11 @@ import com.wyp.common.enums.MemberEnum;
 import com.wyp.controller.vo.req.StaffInfoReq;
 import com.wyp.controller.vo.res.StaffInfoRes;
 import com.wyp.controller.vo.res.StatisticsRes;
+import com.wyp.dao.StatisticsDao;
 import com.wyp.service.CompanyService;
+import com.wyp.service.StatisticsService;
 import com.wyp.service.dto.res.StaffResDto;
+import com.wyp.service.dto.res.StatisticsResDto;
 import com.wyp.utils.ConvertBeanUtil;
 import com.wyp.utils.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.text.DecimalFormat;
+import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,6 +40,9 @@ public class CompanyController {
 
     @Autowired
     private CompanyService companyService;
+
+    @Autowired
+    private StatisticsService statisticsService;
 
     @RequestMapping()
     public String pageCompany() {
@@ -163,7 +172,26 @@ public class CompanyController {
     @GetMapping("Statistics")
     public Result<StatisticsRes> statistics(HttpSession httpSession) {
         //获取登录者信息
-        LoginInfo loginInfo = (LoginInfo) httpSession.getAttribute("loginInfo");
-        return null;
+        final LoginInfo loginInfo = (LoginInfo) httpSession.getAttribute("loginInfo");
+
+        StatisticsResDto statisticsResDto = statisticsService.getStatistics(loginInfo.getCompanyId());
+        if (statisticsResDto == null){
+            return new Result(0,false, "获取失败");
+        }
+        StatisticsRes statisticsRes = ConvertBeanUtil.convertToBean(statisticsResDto, StatisticsRes.class, new Converter<StatisticsResDto, StatisticsRes>() {
+            public void convert(StatisticsResDto from, StatisticsRes to) {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                to.setEstablishDay(formatter.format(loginInfo.getCreateTime()));
+                Date now = new Date();
+                to.setEstablishDayCount((now.getTime()-loginInfo.getCreateTime().getTime())/(24*60*60*1000));
+                if (from.getWeekConsumerCount() != 0){
+                    DecimalFormat dF = new DecimalFormat("0.0");
+                    to.setCustomerAdd(dF.format((float)from.getWeekConsumerCount()/from.getCustomerCount()*100));
+                }else {
+                    to.setCustomerAdd("0");
+                }
+            }
+        });
+        return new Result(1,statisticsRes,"获取统计信息成功");
     }
 }
